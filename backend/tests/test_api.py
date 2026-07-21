@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 client = TestClient(app)
-MC = {"model_name": "gemini-3.5-flash", "temperature": 1.0, "top_p": 0.8, "max_tokens": 4096}
+MC = {"model_name": "gemini-3.6-flash", "temperature": 1.0, "top_p": 0.8, "max_tokens": 4096}
 
 
 def test_health():
