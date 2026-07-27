@@ -7,8 +7,11 @@ CLAUDE_CHANNEL="latest"
 export CLAUDE_CODE_USE_VERTEX=1
 export ANTHROPIC_VERTEX_PROJECT_ID="landing-zone-demo-341118"
 export CLOUD_ML_REGION="global"
-export CLAUDE_CODE_EFFORT_LEVEL=xhigh
-export ANTHROPIC_MODEL="claude-fable-5[1m]"
+# export CLAUDE_CODE_EFFORT_LEVEL=xhigh
+export CLAUDE_CODE_EFFORT_LEVEL=high
+# export ANTHROPIC_MODEL="claude-opus-4-8[1m]"
+export ANTHROPIC_MODEL="claude-opus-5[1m]"
+# export ANTHROPIC_MODEL="claude-fable-5[1m]"
 
 # Trust corporate proxy / MDM root CAs from the macOS keychain.
 # Node ships its own CA store and ignores the keychain by default, so traffic
