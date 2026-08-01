@@ -10,9 +10,20 @@ export CLOUD_ML_REGION="global"
 # export CLAUDE_CODE_EFFORT_LEVEL=xhigh
 export CLAUDE_CODE_EFFORT_LEVEL=high
 MODELS=("claude-sonnet-5[1m]" "claude-opus-5[1m]" "claude-fable-5[1m]")
-echo "Select a model:"
-select ANTHROPIC_MODEL in "${MODELS[@]}"; do
-  [ -n "$ANTHROPIC_MODEL" ] && break
+DEFAULT_MODEL="claude-sonnet-5[1m]"
+PS3="Select a model (default: $DEFAULT_MODEL): "
+while true; do
+  for i in "${!MODELS[@]}"; do
+    printf '%d) %s\n' "$((i + 1))" "${MODELS[$i]}"
+  done
+  read -r -p "$PS3" REPLY
+  if [ -z "$REPLY" ]; then
+    ANTHROPIC_MODEL="$DEFAULT_MODEL"
+    break
+  elif [ "$REPLY" -ge 1 ] 2>/dev/null && [ "$REPLY" -le "${#MODELS[@]}" ] 2>/dev/null; then
+    ANTHROPIC_MODEL="${MODELS[$((REPLY - 1))]}"
+    break
+  fi
   echo "Invalid choice, try again."
 done
 export ANTHROPIC_MODEL
