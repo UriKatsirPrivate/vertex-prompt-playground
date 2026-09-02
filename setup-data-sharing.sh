@@ -21,7 +21,7 @@ LOCATION="${2:-${CLOUD_ML_REGION:-global}}"
 shift "$(( $# > 2 ? 2 : $# ))" || true
 MODELS=("$@")
 if [[ ${#MODELS[@]} -eq 0 ]]; then
-  MODELS=(claude-fable-5 claude-opus-4-8)
+  MODELS=(claude-fable-5 claude-opus-4-8 claude-fable-5-1)
 fi
 
 # The global location uses the global host; regional locations use a regional host.
