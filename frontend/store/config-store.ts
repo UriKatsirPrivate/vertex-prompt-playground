@@ -12,7 +12,7 @@ interface ConfigState extends ModelConfig {
   setTopP: (v: number) => void;
   setMaxTokens: (v: number) => void;
   /** Seed defaults from the server config once, without clobbering stored values. */
-  hydrateDefaults: (defaults: ModelConfig) => void;
+  hydrateDefaults: (defaults: ModelConfig, validModels: string[]) => void;
   asModelConfig: () => ModelConfig;
 }
 
@@ -28,14 +28,17 @@ export const useConfigStore = create<ConfigState>()(
       setTemperature: (temperature) => set({ temperature }),
       setTopP: (top_p) => set({ top_p }),
       setMaxTokens: (max_tokens) => set({ max_tokens }),
-      hydrateDefaults: (d) => {
+      hydrateDefaults: (d, validModels) => {
+        const current = get().model_name;
+        const currentIsValid = !!current && validModels.includes(current);
         if (get().initialized) {
-          // Already seeded; only fill an empty model name (e.g. first load).
-          if (!get().model_name) set({ model_name: d.model_name });
+          // Already seeded; fill an empty or now-invalid model name (e.g. a
+          // model removed from the server list since it was persisted).
+          if (!currentIsValid) set({ model_name: d.model_name });
           return;
         }
         set({
-          model_name: get().model_name || d.model_name,
+          model_name: currentIsValid ? current : d.model_name,
           temperature: d.temperature,
           top_p: d.top_p,
           max_tokens: d.max_tokens,

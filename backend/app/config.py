@@ -19,10 +19,9 @@ class Settings(BaseSettings):
     # Models
     model_names: list[str] = [
         "gemini-3.5-flash-lite",
-        "gemini-3.6-flash",
-        "gemini-3.1-pro-preview",
+        "gemini-3.8-flash",
     ]
-    default_model: str = "gemini-3.5-flash-lite"
+    default_model: str = "gemini-3.8-flash"
     imagen_model: str = "imagen-4.0-fast-generate-001"
 
     # Generation defaults (mirror the old Streamlit sliders)

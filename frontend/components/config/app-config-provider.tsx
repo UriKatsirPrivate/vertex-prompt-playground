@@ -35,12 +35,15 @@ export function AppConfigProvider({ children }: { children: React.ReactNode }) {
     getConfig()
       .then((config) => {
         if (!active) return;
-        hydrateDefaults({
-          model_name: config.default_model,
-          temperature: config.defaults.temperature,
-          top_p: config.defaults.top_p,
-          max_tokens: config.defaults.max_tokens,
-        });
+        hydrateDefaults(
+          {
+            model_name: config.default_model,
+            temperature: config.defaults.temperature,
+            top_p: config.defaults.top_p,
+            max_tokens: config.defaults.max_tokens,
+          },
+          config.models,
+        );
         setState({ config, loading: false, error: null });
       })
       .catch((e: Error) => {
