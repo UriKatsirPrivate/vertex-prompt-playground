@@ -55,7 +55,7 @@ gcloud run deploy "${SERVICE_NAME}" \
   --cpu-boost \
   --cpu=2 \
   --memory=4Gi \
-  --set-env-vars "PG_GCP_PROJECT_ID=${PROJECT_ID},PG_GCP_REGION=global,PG_DEFAULT_MODEL=gemini-3.5-flash-lite"
+  --set-env-vars "PG_GCP_PROJECT_ID=${PROJECT_ID},PG_GCP_REGION=global,PG_DEFAULT_MODEL=gemini-3.8-flash"
 
 echo "-------------------------------------"
 echo "Done. Service URL:"
