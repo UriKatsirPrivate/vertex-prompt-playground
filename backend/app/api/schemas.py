@@ -1,7 +1,7 @@
 """Pydantic request/response models for the API."""
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.config import get_settings
 
@@ -15,9 +15,25 @@ class ModelConfig(BaseModel):
     model_config = ConfigDict(protected_namespaces=())
 
     model_name: str
-    temperature: float = 1.0
-    top_p: float = 0.8
-    max_tokens: int = 65535
+    temperature: float = Field(default=1.0, ge=0.0, le=2.0)
+    top_p: float = Field(default=0.8, ge=0.0, le=1.0)
+    max_tokens: int = Field(default=65535, ge=1)
+
+    @field_validator("model_name")
+    @classmethod
+    def _model_name_allowed(cls, v: str) -> str:
+        allowed = get_settings().model_names
+        if v not in allowed:
+            raise ValueError(f"Unknown model: {v!r}. Must be one of {allowed}.")
+        return v
+
+    @field_validator("max_tokens")
+    @classmethod
+    def _max_tokens_within_limit(cls, v: int) -> int:
+        limit = get_settings().max_tokens_limit
+        if v > limit:
+            raise ValueError(f"max_tokens must be <= {limit}.")
+        return v
 
 
 def default_model_config() -> ModelConfig:
@@ -78,7 +94,7 @@ class ImagePromptsRequest(BaseModel):
     model_config = _REQUEST_CONFIG
 
     description: str
-    count: int = 2
+    count: int = Field(default=2, ge=1, le=8)
     cfg: Annotated[ModelConfig, Field(alias="modelConfig")]
 
 
@@ -88,7 +104,7 @@ class ImagePromptsResponse(BaseModel):
 
 class ImagesRequest(BaseModel):
     description: str
-    count: int = 2
+    count: int = Field(default=2, ge=1, le=8)
 
 
 class ImageOut(BaseModel):
@@ -110,6 +126,7 @@ class ToolMeta(BaseModel):
     help_url: str | None = None
     output_kind: str = "text"
     multi_result: bool = False
+    result_count: int = 1
 
 
 class ConfigDefaults(BaseModel):
@@ -132,3 +149,22 @@ class ConfigResponse(BaseModel):
 class ErrorResponse(BaseModel):
     detail: str
     code: str
+
+
+# ---- NDJSON stream wire format for /api/tools/{tool_id}/stream ----
+class StreamBlockEvent(BaseModel):
+    index: int
+    title: str | None = None
+    content: str
+    language: str | None = None
+
+
+class StreamErrorEvent(BaseModel):
+    index: int
+    title: str | None = None
+    error: str
+    code: str
+
+
+class StreamDoneEvent(BaseModel):
+    done: bool = True

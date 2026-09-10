@@ -10,7 +10,6 @@ from google import genai
 from google.genai import types
 from google.genai.types import GenerateContentConfig
 
-from app.config import get_settings
 from app.core.errors import SafetyBlockedError, UpstreamError
 from app.core.safety import safety_settings
 
@@ -41,11 +40,9 @@ def _build_call(
         top_p=params.top_p,
         max_output_tokens=params.max_tokens,
         safety_settings=safety_settings,
+        system_instruction=system_instruction,
     )
-    parts: list[types.Part] = []
-    if system_instruction:
-        parts.append(types.Part(text=system_instruction))
-    parts.append(types.Part(text=contents))
+    parts: list[types.Part] = [types.Part(text=contents)]
     return config, parts
 
 
@@ -78,9 +75,14 @@ def generate_text(
             contents=parts,
             config=config,
         )
+        text = response.text
+    except ValueError:
+        raise SafetyBlockedError(
+            "The model returned no content. It may have been blocked by safety filters."
+        ) from None
     except Exception as e:  # noqa: BLE001 - surface any SDK/transport error uniformly
         raise UpstreamError(str(e)) from e
-    return _require_text(response.text)
+    return _require_text(text)
 
 
 async def generate_text_async(
@@ -106,16 +108,11 @@ async def generate_text_async(
             contents=parts,
             config=config,
         )
+        text = response.text
+    except ValueError:
+        raise SafetyBlockedError(
+            "The model returned no content. It may have been blocked by safety filters."
+        ) from None
     except Exception as e:  # noqa: BLE001 - surface any SDK/transport error uniformly
         raise UpstreamError(str(e)) from e
-    return _require_text(response.text)
-
-
-def default_params() -> GenerationParams:
-    s = get_settings()
-    return GenerationParams(
-        model_name=s.default_model,
-        temperature=s.default_temperature,
-        top_p=s.default_top_p,
-        max_tokens=s.default_max_tokens,
-    )
+    return _require_text(text)

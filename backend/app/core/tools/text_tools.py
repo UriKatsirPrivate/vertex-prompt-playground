@@ -3,6 +3,9 @@
 Each is a direct port of the matching ``utils.py`` wrapper, minus the Streamlit
 caching/error decorators.
 """
+from concurrent.futures import ThreadPoolExecutor
+
+from app.core.client import get_client
 from app.core.generation import generate_text
 from app.core.prompts.agent_prompt import agent_prompt
 from app.core.prompts.fine_tune_prompt import (
@@ -45,20 +48,44 @@ def fine_tune_jobs(ctx: ToolContext) -> list[BlockJob]:
     ]
 
 
-def fine_tune(ctx: ToolContext) -> ToolResult:
-    """Four improvements of the user's prompt (2x2 grid in the UI).
+def _generate_own_thread(ctx: ToolContext, contents: str, system_instruction: str | None) -> str:
+    """Like ``_generate``, but fetches this thread's own client.
 
-    Runs the jobs sequentially for the plain ``/api/tools/fine_tune`` response;
-    the streaming endpoint runs the same jobs concurrently.
+    Used when a job may run in a worker thread other than the one that built
+    ``ctx`` — ``ctx.client`` belongs to the calling thread's thread-local
+    storage and is not safe to share across threads (see client.py).
     """
+    client = get_client(ctx.project_id, ctx.region)
+    return generate_text(
+        client,
+        project_id=ctx.project_id,
+        region=ctx.region,
+        params=ctx.params,
+        contents=contents,
+        system_instruction=system_instruction,
+    )
+
+
+def fine_tune(ctx: ToolContext) -> ToolResult:
+    """Four improvements of the user's prompt (2x2 grid in the UI), run concurrently.
+
+    Each job fetches its own thread-local client (see ``_generate_own_thread``)
+    so the four requests can run in parallel instead of four sequential round
+    trips. The streaming endpoint runs the same jobs concurrently on the async
+    client.
+    """
+    jobs = fine_tune_jobs(ctx)
+    with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
+        contents = list(
+            pool.map(
+                lambda job: _generate_own_thread(ctx, job.contents, job.system_instruction),
+                jobs,
+            )
+        )
     return ToolResult(
         blocks=[
-            ResultBlock(
-                title=job.title,
-                content=_generate(ctx, job.contents, job.system_instruction),
-                language=job.language,
-            )
-            for job in fine_tune_jobs(ctx)
+            ResultBlock(title=job.title, content=content, language=job.language)
+            for job, content in zip(jobs, contents)
         ]
     )
 

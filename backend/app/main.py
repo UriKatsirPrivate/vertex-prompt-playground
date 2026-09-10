@@ -49,11 +49,25 @@ def health() -> dict:
 # export is absent (local dev), the API runs on its own and the Next dev server
 # serves the UI.
 _static_dir = settings.static_dir
+_static_dir_real = os.path.realpath(_static_dir)
 if os.path.isdir(_static_dir):
+
+    def _safe_static_path(full_path: str) -> str | None:
+        """Resolve ``full_path`` under ``_static_dir``, rejecting traversal outside it."""
+        candidate = os.path.realpath(os.path.join(_static_dir_real, full_path))
+        if os.path.commonpath([_static_dir_real, candidate]) != _static_dir_real:
+            return None
+        return candidate
 
     @app.get("/{full_path:path}")
     async def spa_fallback(full_path: str):
-        candidate = os.path.join(_static_dir, full_path)
+        if full_path == "api" or full_path.startswith("api/"):
+            return JSONResponse(status_code=404, content={"detail": "Not found", "code": "not_found"})
+
+        candidate = _safe_static_path(full_path)
+        if candidate is None:
+            return JSONResponse(status_code=404, content={"detail": "Not found", "code": "not_found"})
+
         if full_path and os.path.isfile(candidate):
             return FileResponse(candidate)
         # Static export emits /fine_tune.html for the /fine_tune route — serve the
@@ -61,7 +75,7 @@ if os.path.isdir(_static_dir):
         html_candidate = f"{candidate}.html"
         if full_path and os.path.isfile(html_candidate):
             return FileResponse(html_candidate)
-        index = os.path.join(_static_dir, "index.html")
+        index = os.path.join(_static_dir_real, "index.html")
         if os.path.isfile(index):
             return FileResponse(index)
         return JSONResponse(status_code=404, content={"detail": "Not found", "code": "not_found"})

@@ -26,7 +26,7 @@ export function GenericToolForm({ tool }: { tool: ToolMeta }) {
   const [streamSlots, setStreamSlots] = useState<(ResultBlock | null)[] | null>(null);
   const [streamErrors, setStreamErrors] = useState<(string | null)[]>([]);
   const asModelConfig = useConfigStore((s) => s.asModelConfig);
-  const resultCount = tool.multi_result ? 4 : 1;
+  const resultCount = tool.result_count ?? (tool.multi_result ? 4 : 1);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -75,16 +75,18 @@ export function GenericToolForm({ tool }: { tool: ToolMeta }) {
       });
       const collected = slots.filter((s): s is ResultBlock => s != null);
       if (collected.length > 0) {
-        setBlocks(collected);
         addHistory(tool.id, { input, blocks: collected, modelConfig });
       } else {
         toast.error(errs.find((x) => x != null) ?? "Request failed");
       }
+      // Leave streamSlots/streamErrors populated so the grid keeps showing
+      // both the successful blocks and any per-slot errors after completion;
+      // submit() resets them at the start of the next run.
     } catch (err) {
       setError(err);
+      setStreamSlots(null);
       toast.error(err instanceof ApiError ? err.message : "Request failed");
     } finally {
-      setStreamSlots(null);
       setLoading(false);
     }
   }

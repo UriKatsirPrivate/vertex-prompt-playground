@@ -15,8 +15,11 @@ from app.core.tools.types import ResultBlock, ToolContext, ToolResult
 
 def _clean_json_string(s: str) -> str:
     """Strip markdown code-fence formatting (mirrors app.py:clean_json_string)."""
+    s = s.strip()
     if s.startswith("```json"):
         s = s[7:]
+    elif s.startswith("```"):
+        s = s[3:]
     return s.strip().strip("`")
 
 
@@ -32,7 +35,7 @@ def _best_candidate(raw_text: str):
     except json.JSONDecodeError:
         return None, cleaned
 
-    if isinstance(parsed, list) and parsed and all("score" in r for r in parsed):
+    if isinstance(parsed, list) and parsed and all(isinstance(r, dict) and "score" in r for r in parsed):
         best = max(parsed, key=lambda x: x.get("score", 0))
         best.pop("score", None)
         return best, cleaned

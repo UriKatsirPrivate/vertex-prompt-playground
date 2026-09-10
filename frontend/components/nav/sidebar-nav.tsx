@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 import { useAppConfig } from "@/components/config/app-config-provider";
 import {
@@ -30,6 +31,7 @@ function groupByCategory(tools: ToolMeta[]): [string, ToolMeta[]][] {
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const { config, loading } = useAppConfig();
   const pathname = usePathname();
+  const groups = useMemo(() => groupByCategory(config?.tools ?? []), [config?.tools]);
 
   if (loading || !config) {
     return (
@@ -40,8 +42,6 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       </div>
     );
   }
-
-  const groups = groupByCategory(config.tools);
 
   return (
     <Accordion multiple className="gap-1 p-2">

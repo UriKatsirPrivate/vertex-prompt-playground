@@ -63,7 +63,7 @@ def generate_images(
                 number_of_images=count,
                 output_mime_type="image/jpeg",
                 safety_filter_level="BLOCK_ONLY_HIGH",
-                person_generation="allow_adult",
+                person_generation=types.PersonGeneration.ALLOW_ADULT,
                 aspect_ratio="9:16",
             ),
         )

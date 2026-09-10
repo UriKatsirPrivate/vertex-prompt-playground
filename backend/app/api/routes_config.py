@@ -22,6 +22,7 @@ def get_config() -> ConfigResponse:
             help_url=spec.help_url,
             output_kind=spec.output_kind,
             multi_result=spec.multi_result,
+            result_count=spec.result_count,
         )
         for spec in TOOL_REGISTRY.values()
     ]

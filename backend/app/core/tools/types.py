@@ -63,6 +63,9 @@ class ToolSpec:
     help_url: str | None = None
     output_kind: str = "text"  # "text" | "json" | "toon" | "stats"
     multi_result: bool = False
+    # Number of result blocks the frontend should render slots for (streaming
+    # and loading-skeleton layouts key off this instead of assuming 4).
+    result_count: int = 1
     # Optional: per-block jobs for the streaming endpoint. When set, the same
     # jobs back both the sync handler and ``/api/tools/{id}/stream``.
     jobs: JobsBuilder | None = None
