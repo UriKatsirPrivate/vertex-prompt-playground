@@ -3,7 +3,7 @@
 import { ResultBlock } from "@/components/tools/result-block";
 import type { ResultBlock as ResultBlockType } from "@/lib/types";
 
-// Layout switches on block count: 1 = full width, 2 (toon) = side-by-side,
+// Layout switches on block count: 1 = full width, 2 = side-by-side,
 // 4 (fine-tune) = 2x2 grid.
 export function ResultList({ blocks }: { blocks: ResultBlockType[] }) {
   if (blocks.length === 0) return null;

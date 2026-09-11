@@ -1,12 +1,9 @@
-"""JSON-scored tools: Json Prompt and Toon Prompt.
+"""JSON-scored tools: Json Prompt.
 
-Both call the JSON prompter, parse the response, and select the highest-``score``
-candidate (ported from the parsing logic in ``app.py``). Toon additionally
-encodes the winner into TOON format.
+Calls the JSON prompter, parses the response, and selects the highest-``score``
+candidate (ported from the parsing logic in ``app.py``).
 """
 import json
-
-from toon import encode
 
 from app.core.generation import generate_text
 from app.core.prompts.system_prompts import JSON_PROMPT
@@ -56,19 +53,3 @@ def json_prompt(ctx: ToolContext) -> ToolResult:
     best, cleaned = _best_candidate(_json_prompter_text(ctx))
     content = json.dumps(best, indent=2) if best is not None else cleaned
     return ToolResult(blocks=[ResultBlock(content=content, language="json")])
-
-
-def toon_prompt(ctx: ToolContext) -> ToolResult:
-    best, cleaned = _best_candidate(_json_prompter_text(ctx))
-    if best is not None:
-        json_content = json.dumps(best, indent=2)
-        toon_content = encode(best)
-    else:
-        json_content = cleaned
-        toon_content = ""
-    return ToolResult(
-        blocks=[
-            ResultBlock(title="JSON Prompt", content=json_content, language="json"),
-            ResultBlock(title="TOON", content=toon_content),
-        ]
-    )

@@ -61,7 +61,7 @@ class ToolSpec:
     handler: Handler
     placeholder: str = ""
     help_url: str | None = None
-    output_kind: str = "text"  # "text" | "json" | "toon" | "stats"
+    output_kind: str = "text"  # "text" | "json" | "stats"
     multi_result: bool = False
     # Number of result blocks the frontend should render slots for (streaming
     # and loading-skeleton layouts key off this instead of assuming 4).

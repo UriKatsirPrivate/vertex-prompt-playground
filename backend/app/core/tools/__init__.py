@@ -65,14 +65,6 @@ TOOL_REGISTRY: dict[str, ToolSpec] = {
             handler=json_tools.json_prompt,
             output_kind="json",
         ),
-        ToolSpec(
-            id="toon_prompt",
-            label="Toon Prompt",
-            category="Transform",
-            handler=json_tools.toon_prompt,
-            help_url="https://github.com/xaviviro/python-toon",
-            output_kind="toon",
-        ),
         # --- Media ---
         ToolSpec(
             id="nano_banana",

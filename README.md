@@ -8,7 +8,7 @@ both ship in one container on **Google Cloud Run**.
 
 - **Prompt-engineering tools:** fine-tune, system, agent, and meta prompts, and more.
 - **Advanced techniques:** Zero-to-Few-Shot, Chain of Thought, D.A.R.E prompting.
-- **Format generation:** JSON, Nano Banana JSON, TOON, and Veo prompts.
+- **Format generation:** JSON, Nano Banana JSON, and Veo prompts.
 - **Image generation:** Imagen 4 from text descriptions.
 - **Prompt compression** and per-tool **run history** (stored in your browser).
 - **Live model config:** model, temperature, top-p, and token limits.
@@ -17,7 +17,7 @@ both ship in one container on **Google Cloud Run**.
 
 - **Frontend:** Next.js 16 (App Router) · React 19 · Tailwind v4 · shadcn-ui · Zustand
   (static export)
-- **Backend:** FastAPI · `google-genai` (Vertex AI) · `gptrim` · `python-toon`
+- **Backend:** FastAPI · `google-genai` (Vertex AI) · `gptrim`
 - **Deploy:** multi-stage Docker → Cloud Build → single Cloud Run service
 
 ## Prerequisites

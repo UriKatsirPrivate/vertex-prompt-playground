@@ -17,7 +17,7 @@ talks to a FastAPI backend; both ship in one container on Google Cloud Run.
 - **Frontend:** Next.js 16 (App Router) · React 19 · Tailwind v4 · shadcn-ui
   (which uses **Base UI**, not Radix) · Zustand · next-themes. Built as a **static
   export** (`output: "export"`).
-- **Backend:** FastAPI · `google-genai` SDK (Vertex AI) · `gptrim` · `python-toon` ·
+- **Backend:** FastAPI · `google-genai` SDK (Vertex AI) · `gptrim` ·
   Pydantic v2 / pydantic-settings. Python 3.12.
 - **Deploy:** multi-stage `Dockerfile` → Cloud Build → single Cloud Run service.
 
@@ -61,7 +61,7 @@ frontend/
 
 ## Tools
 
-Fine-Tune · System · Agent · Meta · Zero-to-Few · Chain-of-Thought · Json · Toon ·
+Fine-Tune · System · Agent · Meta · Zero-to-Few · Chain-of-Thought · Json ·
 Nano Banana · Veo · Run · Compress (generic) + D.A.R.E · Images (bespoke).
 
 ## Run & deploy

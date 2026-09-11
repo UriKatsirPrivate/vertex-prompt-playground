@@ -5,5 +5,4 @@ google-genai==2.12.1
 # google-auth's mTLS / client-cert path imports pyOpenSSL on some token refreshes.
 pyOpenSSL==26.3.0
 gptrim==0.1.6
-python-toon==0.1.3
 pillow==12.3.0
