@@ -9,7 +9,7 @@ export ANTHROPIC_VERTEX_PROJECT_ID="landing-zone-demo-341118"
 export CLOUD_ML_REGION="global"
 # export CLAUDE_CODE_EFFORT_LEVEL=xhigh
 export CLAUDE_CODE_EFFORT_LEVEL=high
-MODELS=("claude-sonnet-5[1m]" "claude-opus-5[1m]" "claude-fable-5-1[1m]")
+MODELS=("claude-sonnet-5[1m]" "claude-opus-5-5[1m]" "claude-fable-5-1[1m]")
 DEFAULT_MODEL="claude-sonnet-5[1m]"
 PS3="Select a model (default: $DEFAULT_MODEL): "
 while true; do
