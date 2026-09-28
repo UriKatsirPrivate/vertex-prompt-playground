@@ -9,8 +9,8 @@ export ANTHROPIC_VERTEX_PROJECT_ID="landing-zone-demo-341118"
 export CLOUD_ML_REGION="global"
 # export CLAUDE_CODE_EFFORT_LEVEL=xhigh
 export CLAUDE_CODE_EFFORT_LEVEL=high
-MODELS=("claude-sonnet-5[1m]" "claude-opus-5-5[1m]" "claude-fable-5-1[1m]")
-DEFAULT_MODEL="claude-sonnet-5[1m]"
+MODELS=("claude-sonnet-5-5[1m]" "claude-opus-5-5[1m]" "claude-fable-5-1[1m]")
+DEFAULT_MODEL="claude-sonnet-5-5[1m]"
 PS3="Select a model (default: $DEFAULT_MODEL): "
 while true; do
   for i in "${!MODELS[@]}"; do
@@ -41,7 +41,12 @@ mkdir -p "$(dirname "$CA_BUNDLE")"
 export NODE_EXTRA_CA_CERTS="$CA_BUNDLE"
 
 gcloud auth application-default print-access-token >/dev/null 2>&1 || gcloud auth application-default login
-"$(dirname "$0")/setup-data-sharing.sh"
+# Only fable and opus models are gated and require data sharing to be enabled.
+case "$ANTHROPIC_MODEL" in
+  *fable*|*opus*)
+    "$(dirname "$0")/setup-data-sharing.sh" "$ANTHROPIC_VERTEX_PROJECT_ID" "$CLOUD_ML_REGION" "${ANTHROPIC_MODEL%\[1m\]}"
+    ;;
+esac
 
 # Re-pin the install only when CLAUDE_CHANNEL changed since the last launch,
 # so normal starts stay fast and offline-safe.
