@@ -19,8 +19,6 @@ class GenerationParams:
     """Per-request model configuration (was the Streamlit sliders)."""
 
     model_name: str
-    temperature: float = 1.0
-    top_p: float = 0.8
     max_tokens: int = 65535
 
 
@@ -36,8 +34,6 @@ def _build_call(
 ) -> tuple[GenerateContentConfig, list[types.Part]]:
     """Shared request assembly for the sync and async generation paths."""
     config = GenerateContentConfig(
-        temperature=params.temperature,
-        top_p=params.top_p,
         max_output_tokens=params.max_tokens,
         safety_settings=safety_settings,
         system_instruction=system_instruction,

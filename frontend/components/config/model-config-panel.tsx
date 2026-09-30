@@ -1,12 +1,6 @@
 "use client";
 
 import { useAppConfig } from "@/components/config/app-config-provider";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -26,12 +20,8 @@ export function ModelConfigPanel() {
 
   const {
     model_name,
-    temperature,
-    top_p,
     max_tokens,
     setModelName,
-    setTemperature,
-    setTopP,
     setMaxTokens,
   } = useConfigStore();
 
@@ -69,39 +59,14 @@ export function ModelConfigPanel() {
         </Select>
       </div>
 
-      <Accordion>
-        <AccordionItem value="advanced" className="border-none">
-          <AccordionTrigger className="py-1 text-xs font-semibold tracking-wide uppercase">
-            Advanced settings
-          </AccordionTrigger>
-          <AccordionContent className="space-y-5 pt-3">
-            <SliderRow
-              label="Temperature"
-              value={temperature}
-              min={d.temperature_range[0]}
-              max={d.temperature_range[1]}
-              step={0.1}
-              onChange={setTemperature}
-            />
-            <SliderRow
-              label="Top-P"
-              value={top_p}
-              min={d.top_p_range[0]}
-              max={d.top_p_range[1]}
-              step={0.05}
-              onChange={setTopP}
-            />
-            <SliderRow
-              label="Max output tokens"
-              value={max_tokens}
-              min={d.max_tokens_range[0]}
-              max={d.max_tokens_range[1]}
-              step={256}
-              onChange={setMaxTokens}
-            />
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <SliderRow
+        label="Max output tokens"
+        value={max_tokens}
+        min={d.max_tokens_range[0]}
+        max={d.max_tokens_range[1]}
+        step={256}
+        onChange={setMaxTokens}
+      />
     </div>
   );
 }

@@ -38,8 +38,6 @@ export function AppConfigProvider({ children }: { children: React.ReactNode }) {
         hydrateDefaults(
           {
             model_name: config.default_model,
-            temperature: config.defaults.temperature,
-            top_p: config.defaults.top_p,
             max_tokens: config.defaults.max_tokens,
           },
           config.models,

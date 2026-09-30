@@ -24,9 +24,8 @@ class Settings(BaseSettings):
     default_model: str = "gemini-3.8-flash"
     imagen_model: str = "imagen-4.0-fast-generate-001"
 
-    # Generation defaults (mirror the old Streamlit sliders)
-    default_temperature: float = 1.0
-    default_top_p: float = 0.8
+    # Generation defaults. temperature/top_p are deliberately not configurable:
+    # Gemini 3.x ignores them (Google recommends the 1.0 default), so we never send them.
     default_max_tokens: int = 65535
     max_tokens_limit: int = 65535
 

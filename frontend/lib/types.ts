@@ -2,8 +2,6 @@
 
 export interface ModelConfig {
   model_name: string;
-  temperature: number;
-  top_p: number;
   max_tokens: number;
 }
 
@@ -32,11 +30,7 @@ export interface ToolMeta {
 }
 
 export interface ConfigDefaults {
-  temperature: number;
-  top_p: number;
   max_tokens: number;
-  temperature_range: [number, number];
-  top_p_range: [number, number];
   max_tokens_range: [number, number];
 }
 

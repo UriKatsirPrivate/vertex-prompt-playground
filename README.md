@@ -11,7 +11,7 @@ both ship in one container on **Google Cloud Run**.
 - **Format generation:** JSON, Nano Banana JSON, and Veo prompts.
 - **Image generation:** Imagen 4 from text descriptions.
 - **Prompt compression** and per-tool **run history** (stored in your browser).
-- **Live model config:** model, temperature, top-p, and token limits.
+- **Live model config:** model and token limit.
 
 ## Stack
 

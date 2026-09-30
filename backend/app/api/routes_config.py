@@ -42,11 +42,7 @@ def get_config() -> ConfigResponse:
         default_model=s.default_model,
         regions=[s.gcp_region],
         defaults=ConfigDefaults(
-            temperature=s.default_temperature,
-            top_p=s.default_top_p,
             max_tokens=s.default_max_tokens,
-            temperature_range=[0.0, 2.0],
-            top_p_range=[0.0, 1.0],
             max_tokens_range=[1, s.max_tokens_limit],
         ),
         tools=tools,

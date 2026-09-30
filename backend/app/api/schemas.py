@@ -15,8 +15,6 @@ class ModelConfig(BaseModel):
     model_config = ConfigDict(protected_namespaces=())
 
     model_name: str
-    temperature: float = Field(default=1.0, ge=0.0, le=2.0)
-    top_p: float = Field(default=0.8, ge=0.0, le=1.0)
     max_tokens: int = Field(default=65535, ge=1)
 
     @field_validator("model_name")
@@ -40,8 +38,6 @@ def default_model_config() -> ModelConfig:
     s = get_settings()
     return ModelConfig(
         model_name=s.default_model,
-        temperature=s.default_temperature,
-        top_p=s.default_top_p,
         max_tokens=s.default_max_tokens,
     )
 
@@ -130,11 +126,7 @@ class ToolMeta(BaseModel):
 
 
 class ConfigDefaults(BaseModel):
-    temperature: float
-    top_p: float
     max_tokens: int
-    temperature_range: list[float]
-    top_p_range: list[float]
     max_tokens_range: list[int]
 
 
