@@ -3,6 +3,10 @@ uvicorn[standard]==0.34.0
 pydantic-settings==2.14.2
 google-genai==2.12.1
 # google-auth's mTLS / client-cert path imports pyOpenSSL on some token refreshes.
-pyOpenSSL==26.3.0
-gptrim==0.1.6
+pyOpenSSL==26.4.0
+# gptrim hard-pins nltk==3.8.1 (74 known advisories); it only uses stable nltk APIs
+# (word_tokenize, stopwords, stemmers), so gptrim is installed with --no-deps from
+# requirements-nodeps.txt and nltk/cryptography are pinned here instead.
+nltk==3.10.3
+cryptography==50.0.1
 pillow==12.3.0

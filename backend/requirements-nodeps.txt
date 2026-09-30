@@ -1,0 +1,2 @@
+# Install with: pip install --no-deps -r requirements-nodeps.txt (see requirements.txt)
+gptrim==0.1.6

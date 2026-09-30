@@ -32,7 +32,7 @@ See **[DEVELOPMENT.md](./DEVELOPMENT.md)** for the full guide. Quick version (tw
 
 ```bash
 # Backend  -> http://localhost:8000
-cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pip install --no-deps -r requirements-nodeps.txt
 .venv/bin/uvicorn app.main:app --reload --port 8000
 
 # Frontend -> http://localhost:3000
@@ -53,6 +53,6 @@ The Cloud Run service account needs the **Vertex AI User** role. Runtime config 
 ## Architecture
 
 `Next.js SPA → /api/* (FastAPI) → core/ → Vertex AI`. The frontend reads `/api/config`
-at runtime to build its grouped navigation and forms. Twelve of the fourteen tools are
+at runtime to build its grouped navigation and forms. Eleven of the thirteen tools are
 served by one generic endpoint + form; D.A.R.E and Images are bespoke. See `CLAUDE.md`
 for conventions.

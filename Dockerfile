@@ -20,8 +20,9 @@ ENV PYTHONUNBUFFERED=True \
     NLTK_DATA=/usr/share/nltk_data \
     PG_GCP_PROJECT_ID=landing-zone-demo-341118
 WORKDIR /app
-COPY backend/requirements.txt ./
+COPY backend/requirements.txt backend/requirements-nodeps.txt ./
 RUN pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir --no-deps -r requirements-nodeps.txt \
     && python -m nltk.downloader -d /usr/share/nltk_data stopwords punkt punkt_tab
 COPY backend/ ./
 COPY --from=web /web/out ./static

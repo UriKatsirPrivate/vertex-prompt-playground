@@ -43,7 +43,7 @@ frontend/
 
 ## Key conventions
 
-- **One generic path for most tools.** 12 of 14 tools are "text/JSON in → blocks out",
+- **One generic path for most tools.** 11 of 13 tools are "text/JSON in → blocks out",
   served by `POST /api/tools/{id}` and rendered by `GenericToolForm`. Only **D.A.R.E**
   (multi-field) and **Images** (binary) have dedicated endpoints + pages.
 - **Adding a tool:** add a handler + `ToolSpec` to `backend/app/core/tools/` (registry),
@@ -71,7 +71,7 @@ container build. Quick version:
 
 ```bash
 # backend
-cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+cd backend && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pip install --no-deps -r requirements-nodeps.txt
 .venv/bin/uvicorn app.main:app --reload --port 8000
 # frontend
 cd frontend && npm install && npm run dev      # :3000 -> :8000 via .env.local

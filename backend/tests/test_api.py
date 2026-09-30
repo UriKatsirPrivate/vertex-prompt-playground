@@ -19,8 +19,8 @@ def test_health():
 def test_config_lists_all_tools():
     cfg = client.get("/api/config").json()
     ids = {t["id"] for t in cfg["tools"]}
-    # 12 generic + 2 special (dare, images)
-    assert len(cfg["tools"]) == 14
+    # 11 generic + 2 special (dare, images)
+    assert len(cfg["tools"]) == 13
     assert {"fine_tune", "json_prompt", "compress", "dare", "images"} <= ids
     assert cfg["default_model"] in cfg["models"]
 

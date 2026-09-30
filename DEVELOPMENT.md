@@ -9,7 +9,7 @@ Streamlit app at the repo root still runs unchanged until the Phase 6 cutover.
 ```bash
 # 1. Backend (http://localhost:8000)
 cd backend
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pip install --no-deps -r requirements-nodeps.txt
 gcloud auth application-default login          # ADC for Vertex
 .venv/bin/uvicorn app.main:app --reload --port 8000
 
