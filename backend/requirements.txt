@@ -9,4 +9,4 @@ pyOpenSSL==26.4.0
 # requirements-nodeps.txt and nltk/cryptography are pinned here instead.
 nltk==3.10.3
 cryptography==50.0.1
-pillow==12.3.0
+pillow==13.0.0
