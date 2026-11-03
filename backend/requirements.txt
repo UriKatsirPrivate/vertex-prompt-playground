@@ -7,6 +7,6 @@ pyOpenSSL==26.4.0
 # gptrim hard-pins nltk==3.8.1 (74 known advisories); it only uses stable nltk APIs
 # (word_tokenize, stopwords, stemmers), so gptrim is installed with --no-deps from
 # requirements-nodeps.txt and nltk/cryptography are pinned here instead.
-nltk==3.10.3
+nltk==3.10.4
 cryptography==50.0.1
 pillow==13.0.0
